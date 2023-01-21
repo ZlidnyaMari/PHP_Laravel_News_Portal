@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +27,21 @@ Route::get('/info', static function(): string {
     return 'Информация для ознакомления';
 });
 
-Route::get('/news', static function(): string {
-    return 'Новости на сегодня';
+Route::group(['prefix' => ''], static function() {
+    Route::get('/news', [NewsController::class, 'index'])
+        ->name('news');
+    Route::get('/news/{id}/show', [NewsController::class, 'show'])
+        ->where('id', '\d+')
+        ->name('news.show');
 });
+
+Route::group(['prefix' => ''], static function() {
+    Route::get('/categories', [CategoryController::class, 'index'])
+        ->name('categories');
+    Route::get('/categories/{id}/show', [CategoryController::class, 'show'])
+        ->where('id', '\d+')
+        ->name('categories.show');
+});
+    
 
 
