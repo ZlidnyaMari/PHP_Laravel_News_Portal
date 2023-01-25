@@ -3,7 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\IndexController as AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,12 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/welcome/{name}', static function(string $name): string{
-    return "welcome {$name}";
-});
-
-Route::get('/info', static function(): string {
-    return 'Информация для ознакомления';
+Route::group(['prefix' => 'admin'], static function() {
+    Route::get('/', AdminController::class)
+        ->name('admin.index');
 });
 
 Route::group(['prefix' => ''], static function() {
@@ -42,6 +39,6 @@ Route::group(['prefix' => ''], static function() {
         ->where('id', '\d+')
         ->name('categories.show');
 });
-    
+
 
 
