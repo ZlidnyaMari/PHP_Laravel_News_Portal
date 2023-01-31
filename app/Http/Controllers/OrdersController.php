@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class NewsController extends Controller
      */
     public function index(): View
     {
-        return \view('admin.news.index');
+        return \view('form.orders');
     }
 
     /**
@@ -23,9 +24,9 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(): View
+    public function create()
     {
-        return \view('admin.news.create');
+        //
     }
 
     /**
@@ -36,7 +37,9 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        \dd($request->input('title'));
+        file_put_contents('file_form.txt', $request->all());
+        return redirect()->route('orders.index');
+
     }
 
     /**

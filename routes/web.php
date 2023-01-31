@@ -1,9 +1,13 @@
 <?php
-
+use App\Http\Controllers\Admin\CategoryController as AdminCategoriesController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController as AdminController;
+use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ReviewsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,9 +23,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'admin'], static function() {
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function() {
     Route::get('/', AdminController::class)
-        ->name('admin.index');
+        ->name('index');
+    Route::resource('categories', AdminCategoriesController::class);
+    Route::resource('news', AdminNewsController::class);
 });
 
 Route::group(['prefix' => ''], static function() {
@@ -38,6 +44,11 @@ Route::group(['prefix' => ''], static function() {
     Route::get('/categories/{id}/show', [CategoryController::class, 'show'])
         ->where('id', '\d+')
         ->name('categories.show');
+});
+
+Route::group(['prefix' => 'form'], static function() {
+    Route::resource('reviews', ReviewsController::class);
+    Route::resource('orders', OrdersController::class);
 });
 
 
