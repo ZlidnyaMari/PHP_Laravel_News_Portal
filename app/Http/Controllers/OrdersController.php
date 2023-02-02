@@ -37,7 +37,8 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        file_put_contents('file_form.txt', $request->all());
+        file_put_contents(public_path('file_form.txt'), json_encode($request->all()));
+        // file_put_contents('file_form.txt', $request->all());
         return redirect()->route('orders.index');
 
     }
