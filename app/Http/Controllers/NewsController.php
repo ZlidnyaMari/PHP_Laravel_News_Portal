@@ -9,18 +9,18 @@ class NewsController extends Controller
 {
     use NewsTrait;
 
-    public function index() 
+    public function index()
     {
         return \view('news.index', [
             'news' => $this->getNews(),
         ]);
     }
 
-    public function show(int $id) 
+    public function show(int $id)
     {
         return \view('news.show', [
             'news' => $this->getNews($id)
         ]);
-       
+
     }
 }

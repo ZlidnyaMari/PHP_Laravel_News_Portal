@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Feedback;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class ReviewsController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +18,7 @@ class ReviewsController extends Controller
      */
     public function index(): View
     {
-        return \view('form.reviews');
+        return \view('form.feedback');
     }
 
     /**
@@ -37,9 +39,18 @@ class ReviewsController extends Controller
      */
     public function store(Request $request)
     {
-        file_put_contents(public_path('file_form.txt'), json_encode($request->all()));
-        //file_put_contents('file_form.txt', $request->all());
-        return redirect()->route('reviews.index');
+        $request->validate([
+            'name' => 'required',
+            'reviews' => 'required',
+        ]);
+
+        $feedback = new Feedback($request->input());
+
+        if($feedback->save()){
+            return \redirect()->route('feedback.index')->with('succses', 'отзыв добавлен');
+        }
+        return \back()->with('error', 'не удалось сохранить отзыв');
+
     }
 
     /**
@@ -73,7 +84,7 @@ class ReviewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**

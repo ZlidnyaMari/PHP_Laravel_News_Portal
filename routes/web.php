@@ -5,8 +5,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController as AdminController;
-use App\Http\Controllers\OrdersController;
-use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\NewsSourceController;
+use App\Http\Controllers\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +47,8 @@ Route::group(['prefix' => ''], static function() {
 });
 
 Route::group(['prefix' => 'form'], static function() {
-    Route::resource('reviews', ReviewsController::class);
-    Route::resource('orders', OrdersController::class);
+    Route::resource('feedback', FeedbackController::class);
+    Route::resource('source', NewsSourceController::class);
 });
 
 

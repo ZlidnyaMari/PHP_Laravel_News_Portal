@@ -8,11 +8,11 @@
 </div>
 
 <div>
-    <form method="post" action="{{ route('reviews.store') }}">
+    <form method="post" action="{{ route('feedback.store') }}">
         @csrf
         <div class = "form-group">
-            <label for="user">Как Вас зовут</label>
-            <input type="text" name="user" id="user" value="{{ \old('user') }}" class="form-control" required>
+            <label for="name">Как Вас зовут</label>
+            <input type="text" name="name" id="name" value="{{ \old('user') }}" class="form-control" required>
         </div>
         <div class = "form-group">
             <label for="reviews">Оставте свой отзыв</label>
