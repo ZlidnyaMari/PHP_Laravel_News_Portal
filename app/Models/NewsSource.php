@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class NewsSource extends Model
 {
     use HasFactory;
+
+    protected $table = 'news_source';
+
+    protected $fillable = [      // указываем поля котоые нужно заполнять
+        'name',
+        'url',
+    ];
 }

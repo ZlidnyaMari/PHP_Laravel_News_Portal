@@ -20,6 +20,12 @@
           </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link @if( request()->routeIs('admin.source.*')) active @endif" href="{{ route('admin.source.index')}}">
+              <span data-feather="shopping-cart"></span>
+            Новостные ресурсы
+            </a>
+          </li>
+        <li class="nav-item">
           <a class="nav-link" href="#">
             <span data-feather="users"></span>
             Пользователи

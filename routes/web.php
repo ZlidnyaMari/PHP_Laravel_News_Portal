@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Admin\CategoryController as AdminCategoriesController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\NewsSourceController as AdminNewsSourceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function() {
         ->name('index');
     Route::resource('categories', AdminCategoriesController::class);
     Route::resource('news', AdminNewsController::class);
+    Route::resource('source', AdminNewsSourceController::class);
 });
 
 Route::group(['prefix' => ''], static function() {
@@ -48,7 +50,6 @@ Route::group(['prefix' => ''], static function() {
 
 Route::group(['prefix' => 'form'], static function() {
     Route::resource('feedback', FeedbackController::class);
-    Route::resource('source', NewsSourceController::class);
 });
 
 

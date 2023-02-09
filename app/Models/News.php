@@ -38,6 +38,11 @@ class News extends Model
             'news_id', 'category_id', 'id', 'id');
     }
 
+    public function source()
+    {
+        return $this->hasMany(NewsSource::class);
+    }
+
 
     // public function getNews(): Collection
     // {

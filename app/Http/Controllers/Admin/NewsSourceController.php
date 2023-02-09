@@ -1,34 +1,39 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Feedback;
+use App\Models\NewsSource;
+use App\QueryBuilders\NewsSourceQueryBuilder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class FeedbackController extends Controller
+class NewsSourceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param NewsSourceQueryBuilder $newsSourceQueryBuilder
+     * @return View
      */
-    public function index(): View
+    public function index (NewsSourceQueryBuilder $newsSourceQueryBuilder): View
     {
-        return \view('form.feedback');
+        //\dd($newsSourceQueryBuilder->getTitleNewsSources());
+        return \view('admin.source.index', [
+            'sourceList' => $newsSourceQueryBuilder->getAll(),
+            // 'sourceList' => $newsSourceQueryBuilder->getTitleNewsSources(),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return \view('admin.source.create');
     }
 
     /**
@@ -37,20 +42,19 @@ class FeedbackController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'reviews' => 'required',
+            'email' => 'required'
         ]);
 
-        $feedback = new Feedback($request->input());
+        $source = new NewsSource($request->input());
 
-        if($feedback->save()){
-            return \redirect()->route('feedback.index')->with('succses', 'отзыв добавлен');
+        if ($source->save()) {
+            return \redirect()->route('admin.source.index')->with('succses', 'новость добавлена');
         }
-        return \back()->with('error', 'не удалось сохранить отзыв');
-
+        return \back()->with('error', 'не удалось сохранить запись');
     }
 
     /**
@@ -84,7 +88,7 @@ class FeedbackController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //
     }
 
     /**

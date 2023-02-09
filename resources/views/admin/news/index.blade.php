@@ -26,7 +26,7 @@
             @forelse ($newsList as $news)
                 <tr>
                     <td>{{ $news->id }}</td>
-                    <td>{{ $news->categories->map(fn($item) => $item->title)->implode(".") }}</td>
+                    <td>{{ $news->categories->map(fn($item) => $item->title)->implode(",") }}</td>
                     <td>{{ $news->title }}</td>
                     <td>{{ $news->author }}</td>
                     <td>{{ $news->status }}</td>
