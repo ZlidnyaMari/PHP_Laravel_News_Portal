@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class OrdersController extends Controller
+class NewsSourceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class OrdersController extends Controller
      */
     public function index(): View
     {
-        return \view('form.orders');
+        return \view('form.source');
     }
 
     /**
@@ -39,7 +39,7 @@ class OrdersController extends Controller
     {
         file_put_contents(public_path('file_form.txt'), json_encode($request->all()));
         // file_put_contents('file_form.txt', $request->all());
-        return redirect()->route('orders.index');
+        return redirect()->route('source.index');
 
     }
 
