@@ -28,6 +28,11 @@ final class NewsQueryBuilder extends QueryBuilder
         return $this->model->with('categories')->paginate($quantity);
     }
 
+    public function getNewsSource()
+    {
+        return $this->model->with('source');
+    }
+
     public function getAll(): Collection
     {
         return $this->model->get();

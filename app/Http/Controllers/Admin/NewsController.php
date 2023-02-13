@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\NewsStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
 use App\Models\News;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsQueryBuilder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -44,18 +47,15 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse;
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required',
-        ]);
+        $news = News::create($request->validated());
 
-        $news = new News($request->except('_token', 'category_id')); //News::create()
-
-        if ($news->save()) {
+        if ($news) {
+            $news->categories()->attach($request->getCategoriesdIds());
             return \redirect()->route('admin.news.index')->with('succses', 'новость добавлена');
         }
         return \back()->with('error', 'не удалось сохранить запись');
@@ -91,17 +91,17 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\EditRequest  $request
      * @param  News $news
      * @return \Illuminate\Http\RedirectResponse;
      */
-    public function update(Request $request, News $news): RedirectResponse
+    public function update(EditRequest $request, News $news): RedirectResponse
     {
-        $news = $news->fill($request->except('_token', 'category_ids'));
+        $news = $news->fill($request->validated());
 
         if ($news->save()) {
 
-            $news->categories()->sync((array) $request->input('category_ids'));
+            $news->categories()->sync($request->getCategoriesdIds());
             return \redirect()->route('admin.news.index')->with('succses', 'новость обновлена');
         }
         return \back()->with('error', 'не удалось обновить запись');

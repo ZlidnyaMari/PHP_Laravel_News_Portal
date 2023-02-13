@@ -14,6 +14,9 @@
             <label for="news_id">Новости</label>
             <select class="form-control" name="news_id" id="news_id">
                 <option value="0">--Выбрать--</option>
+            @foreach ($newsList as $news)
+                <option @if((int) old('news_id') === $news->id) selected @endif value={{ "$news->id" }}>{{ "$news->title" }}</option>
+            @endforeach
             </select>
         </div>
         <div class = "form-group">
@@ -21,8 +24,8 @@
             <input type="text" name="name" id="name" value="{{ \old('name') }}" class="form-control" required>
         </div>
         <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="{{ \old('email') }}" class="form-control" required>
+            <label for="url">Адрес ресурса</label>
+            <input type="url" name="url" id="url" value="{{ \old('url') }}" class="form-control" required>
         </div>
 
         <br>

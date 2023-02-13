@@ -26,7 +26,7 @@
                     <td>{{ $source->news_id}}</td>
                     <td>{{ $source->name }}</td>
                     <td>{{ $source->url }}</td>
-                    <td><a href="#">Изм.</a> &nbsp; <a href="#" style="color: red">Уд.</a></td>
+                    <td><a href="{{ route('admin.source.edit', ['source' => $source]) }}">Изм.</a> &nbsp; <a href="#" style="color: red">Уд.</a></td>
                 </tr>
             @empty
                 <tr>

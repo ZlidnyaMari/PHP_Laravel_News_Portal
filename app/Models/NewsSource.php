@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +14,9 @@ class NewsSource extends Model
     protected $table = 'news_source';
 
     protected $fillable = [      // указываем поля котоые нужно заполнять
+        'news_id',
         'name',
         'url',
     ];
+    public $timestamps = false;
 }
