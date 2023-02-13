@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsSource\CreateRequest;
+use App\Http\Requests\NewsSource\EditRequest;
 use App\Models\News;
 use App\Models\NewsSource;
 use App\QueryBuilders\NewsSourceQueryBuilder;
@@ -12,6 +14,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\QueryBuilders\NewsQueryBuilder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class NewsSourceController extends Controller
 {
@@ -46,22 +50,17 @@ class NewsSourceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest  $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required',
-            'url' => 'required'
-        ]);
+        $source = NewsSource::create($request->validated());
 
-        $source = new NewsSource($request->input());
-
-        if ($source->save()) {
-            return \redirect()->route('admin.source.index')->with('succses', 'новость добавлена');
+        if ($source) {
+            return \redirect()->route('admin.source.index')->with('succses', __('messages.source.create.sucсess'));
         }
-        return \back()->with('error', 'не удалось сохранить запись');
+        return \back()->with('error', __('messages.source.create.fail'));
     }
 
     /**
@@ -93,32 +92,40 @@ class NewsSourceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditRequest  $request
      * @param  NewsSource $source
      * @param  News $news
      * @return RedirectResponse
      */
-    public function update(Request $request, NewsSource $source, News $news): RedirectResponse
+    public function update(EditRequest $request, NewsSource $source, News $news): RedirectResponse
     {
-        $source = $source->fill($request->input());
+        $source = $source->fill($request->validated());
 
-        if ($source->save()) {
+        if ($source) {
 
-            $news->source()->$request->input('news_ids');
+           // $source->news()  ($request->getNewsId());
 
-            return \redirect()->route('admin.source.index')->with('succses', 'новость обновлена');
+            return \redirect()->route('admin.source.index')->with('succses', __('messages.source.edit.sucсess'));
         }
-            return \back()->with('error', 'не удалось обновить запись');
+            return \back()->with('error', __('messages.source.edit.fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  NewsSource $source
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(NewsSource $source): JsonResponse
     {
-        //
+        try{
+            $source->delete();
+
+            return \response()->json('ok');
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), [$exception]);
+
+            return \response()->json('error', 400);
+        }
     }
 }

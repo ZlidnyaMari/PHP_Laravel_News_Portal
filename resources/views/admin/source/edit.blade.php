@@ -7,15 +7,21 @@
 </div>
 
 <div>
+    @if ($errors->any())
+        @foreach($errors->all() as $error)
+            <x-alert type="danger" :message="$error"></x-alert>
+        @endforeach
+    @endif
+
     <form method="post" action="{{ route('admin.source.update', ['source' => $source]) }}">
         @csrf
         @method('put')
         <div class = "form-group">
-            <label for="news_ids">Новости</label>
-            <select class="form-control" name="news_ids[]" id="news_ids">
+            <label for="news_id">Заголовок новости</label>
+            <select class="form-control" name="news_id" id="news_id">
                 <option value="0">--Выбрать--</option>
                 @foreach ($newsList as $news)
-                    <option @if(in_array($source->news_id, $newsList->pluck('id')->all())) selected @endif value={{ "$news->id" }}>{{ "$news->title" }}</option>
+                    <option @if((int) old('news_id') === $news->id) selected @endif value={{ "$news->id" }}>{{ "$news->title" }}</option>
                 @endforeach
             </select>
         </div>
@@ -29,7 +35,7 @@
         </div>
 
         <br>
-        <button type="submit" class = "btn btn-success" style="margin-bottom: 10px">Добавить</button>
+        <button type="submit" class = "btn btn-success" style="margin-bottom: 10px">Изменить</button>
 
     </form>
 </div>

@@ -19,4 +19,9 @@ class NewsSource extends Model
         'url',
     ];
     public $timestamps = false;
+
+    public function news()
+    {
+        return $this->belongsTo(News::class, 'news_id');
+    }
 }

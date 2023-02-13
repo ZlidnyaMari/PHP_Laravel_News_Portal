@@ -12,7 +12,9 @@ use App\Models\News;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsQueryBuilder;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 
 class NewsController extends Controller
 {
@@ -47,7 +49,7 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\CreateRequest  $request
+     * @param  CreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse;
      */
     public function store(CreateRequest $request): RedirectResponse
@@ -56,9 +58,9 @@ class NewsController extends Controller
 
         if ($news) {
             $news->categories()->attach($request->getCategoriesdIds());
-            return \redirect()->route('admin.news.index')->with('succses', 'новость добавлена');
+            return \redirect()->route('admin.news.index')->with('succses', __('messages.admin.news.sucсess'));
         }
-        return \back()->with('error', 'не удалось сохранить запись');
+        return \back()->with('error', __('messages.admin.news.fail'));
     }
 
     /**
@@ -102,19 +104,27 @@ class NewsController extends Controller
         if ($news->save()) {
 
             $news->categories()->sync($request->getCategoriesdIds());
-            return \redirect()->route('admin.news.index')->with('succses', 'новость обновлена');
+            return \redirect()->route('admin.news.index')->with('succses', __('messages.admin.news.sucсess'));
         }
-        return \back()->with('error', 'не удалось обновить запись');
+        return \back()->with('error', __('messages.admin.news.fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  News $news
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(News $news): JsonResponse
     {
-        //
+        try{
+            $news->delete();
+
+            return \response()->json('ok');
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), [$exception]);
+
+            return \response()->json('error', 400);
+        }
     }
 }
