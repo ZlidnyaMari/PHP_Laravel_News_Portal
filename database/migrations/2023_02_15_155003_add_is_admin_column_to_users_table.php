@@ -15,11 +15,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feedback', static function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('reviews');
-            $table->timestamps();
+        Schema::table('users', static function (Blueprint $table): void {
+            $table->boolean('is_admin')->after('id')->default(false);
         });
     }
 
@@ -30,6 +27,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feedback');
+        Schema::table('users', function (Blueprint $table): void {
+            $table->dropColumn('is_admin');
+        });
     }
 };
