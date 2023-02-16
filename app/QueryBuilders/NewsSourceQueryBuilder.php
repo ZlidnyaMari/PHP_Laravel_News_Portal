@@ -23,9 +23,4 @@ final class NewsSourceQueryBuilder extends QueryBuilder
     {
         return $this->model->get();
     }
-
-    public function getTitleNewsSources()
-    {
-        return News::find(1)->source;
-    }
 }
