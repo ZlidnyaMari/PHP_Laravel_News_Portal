@@ -49,4 +49,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+    protected $dates = [
+        'last_login_at'
+    ];
 }

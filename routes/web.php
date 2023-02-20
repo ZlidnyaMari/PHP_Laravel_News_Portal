@@ -9,7 +9,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\UsersController as AdminUsersController;
-
+use App\Http\Controllers\SocialProvidersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 /*
@@ -73,3 +73,12 @@ Route::group(['prefix' => 'form'], static function() {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['prefix' => 'social'], function() {
+    Route::get('/auth/redirect/{driver}', [SocialProvidersController::class, 'redirect'])
+    ->where('driver', '\w+')
+    ->name('social.auth.rediect');
+
+    Route::get('/auth/callback/{driver}', [SocialProvidersController::class, 'callback'])
+    ->where('driver', '\w+');
+});
