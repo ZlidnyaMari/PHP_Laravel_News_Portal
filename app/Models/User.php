@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -22,8 +22,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'is_admin'
     ];
+
+    public $timestamps = false;
+
+    public const ADMIN = 1;
+    public const USER = 0;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,5 +47,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
+    ];
+
+    protected $dates = [
+        'last_login_at'
     ];
 }

@@ -12,7 +12,6 @@ use App\Models\NewsSource;
 use App\QueryBuilders\NewsSourceQueryBuilder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use App\QueryBuilders\NewsQueryBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -101,9 +100,7 @@ class NewsSourceController extends Controller
     {
         $source = $source->fill($request->validated());
 
-        if ($source) {
-
-           // $source->news()  ($request->getNewsId());
+        if ($source->save()) {
 
             return \redirect()->route('admin.source.index')->with('succses', __('messages.source.edit.sucсess'));
         }

@@ -13,7 +13,7 @@
         @endforeach
     @endif
 
-    <form method="post" action="{{ route('admin.news.store') }}">
+    <form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
         @csrf
         <div class = "form-group">
             <label for="category_ids">Категории</label>
@@ -56,3 +56,14 @@
 
 </div>
 @endsection
+@push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+@endpush

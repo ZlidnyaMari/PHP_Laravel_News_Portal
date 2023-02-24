@@ -4,22 +4,31 @@ declare (strict_types = 1);
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\QueryBuilders\NewsQueryBuilder;
+use App\Models\News;
 
 class NewsController extends Controller
 {
     use NewsTrait;
 
-    public function index()
+     /**
+     * Display a listing of the resource.
+     *
+     * @param NewsQueryBuilder $newsQueryBuilder
+     * @return View
+     */
+
+    public function index(NewsQueryBuilder $newsQueryBuilder)
     {
         return \view('news.index', [
-            'news' => $this->getNews(),
+            'newsList' => $newsQueryBuilder->getNewsWithPagination(),
         ]);
     }
 
-    public function show(int $id)
+    public function show(News $news)
     {
         return \view('news.show', [
-            'news' => $this->getNews($id)
+            'news' => $news
         ]);
 
     }

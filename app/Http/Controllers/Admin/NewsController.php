@@ -11,6 +11,7 @@ use App\Http\Requests\News\EditRequest;
 use App\Models\News;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsQueryBuilder;
+use App\Services\UploadService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -52,9 +53,15 @@ class NewsController extends Controller
      * @param  CreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse;
      */
-    public function store(CreateRequest $request): RedirectResponse
+    public function store(CreateRequest $request, UploadService $uploadService): RedirectResponse
     {
-        $news = News::create($request->validated());
+        $validated = $request->validated();
+
+        if($request->hasFile('image')){
+            $validated['image'] = $uploadService->uploadImage($request->file('image'));
+        }
+
+        $news = News::create($validated);
 
         if ($news) {
             $news->categories()->attach($request->getCategoriesdIds());
@@ -97,9 +104,16 @@ class NewsController extends Controller
      * @param  News $news
      * @return \Illuminate\Http\RedirectResponse;
      */
-    public function update(EditRequest $request, News $news): RedirectResponse
+    public function update(EditRequest $request, News $news, UploadService $uploadService): RedirectResponse
     {
-        $news = $news->fill($request->validated());
+        $validated = $request->validated();
+
+        if($request->hasFile('image')){
+            $validated['image'] = $uploadService->uploadImage($request->file('image'));
+        }
+
+        $news = $news->fill($validated);
+
 
         if ($news->save()) {
 
