@@ -14,11 +14,7 @@
     </div>
   </div>
 
-  <div class="table-responsive">
+  <br>
+  <a href="{{ route('admin.parcer') }}">Парсить новости</a>
 
-    <x-alert type="success" message="Это информационное сообщение"></x-alert>
-    <x-alert type="info" message="Это информационное сообщение"></x-alert>
-    <x-alert type="warning" message="Это информационное сообщение"></x-alert>
-    <x-alert type="danger" message="Это информационное сообщение"></x-alert>
-  </div>
 @endsection

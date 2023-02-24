@@ -13,7 +13,7 @@
         @endforeach
     @endif
 
-    <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+    <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
         @csrf
         @method('put')
         <div class = "form-group">
@@ -57,3 +57,14 @@
 
 </div>
 @endsection
+@push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+@endpush

@@ -7,8 +7,11 @@ use App\QueryBuilders\NewsQueryBuilder;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsSourceQueryBuilder;
 use App\QueryBuilders\UsersQueryBuilder;
-use App\Service\Contracts\Social;
-use App\Service\SocialService;
+use App\Services\Contracts\Social;
+use App\Services\Contracts\Parser;
+use App\Services\ParserService;
+use App\Services\SocialService;
+use App\Services\UploadService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(QueryBuilder::class, NewsSourceQueryBuilder::class);
         $this->app->bind(QueryBuilder::class, UsersQueryBuilder::class);
         $this->app->bind(Social::class, SocialService::class);
+        $this->app->bind(UploadService::class);
+        $this->app->bind(Parser::class, ParserService::class);
     }
 
     /**

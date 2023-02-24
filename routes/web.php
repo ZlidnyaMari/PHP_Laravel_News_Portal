@@ -7,6 +7,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Account\IndexController as AccountController;
+use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\UsersController as AdminUsersController;
 use App\Http\Controllers\SocialProvidersController;
@@ -34,6 +35,7 @@ Route::group(['middleware' => 'auth'], static function() {
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], static function() {
         Route::get('/', AdminController::class)
             ->name('index');
+        Route::get('/parcer', ParserController::class)->name('parcer');
         Route::resource('categories', AdminCategoriesController::class);
         Route::resource('news', AdminNewsController::class);
         Route::resource('source', AdminNewsSourceController::class);
@@ -50,8 +52,8 @@ Route::group(['middleware' => 'auth'], static function() {
 Route::group(['prefix' => ''], static function() {
     Route::get('/news', [NewsController::class, 'index'])
         ->name('news');
-    Route::get('/news/{id}/show', [NewsController::class, 'show'])
-        ->where('id', '\d+')
+    Route::get('/news/{news}/show', [NewsController::class, 'show'])
+        ->where('news', '\d+')
         ->name('news.show');
 });
 
@@ -65,6 +67,10 @@ Route::group(['prefix' => ''], static function() {
 
 Route::group(['prefix' => 'form'], static function() {
     Route::resource('feedback', FeedbackController::class);
+});
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
 
